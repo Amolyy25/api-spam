@@ -222,7 +222,7 @@ def increment_rate(api_key: str, inc: int = 1) -> int:
 		conn.close()
 
 
-def validate_api_key_db(x_api_key: Optional[str] = Header(default=None, alias="X-API-Key")) -> Tuple[str, str]:
+def validate_api_key_db(x_api_key: Optional[str] = Header(default=None, alias="X-API-Key"), request: Request = None) -> Tuple[str, str]:
 	if not x_api_key:
 		raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or missing API key")
 	path = _get_db_path()
@@ -235,14 +235,16 @@ def validate_api_key_db(x_api_key: Optional[str] = Header(default=None, alias="X
 		)
 		row = cur.fetchone()
 		if not row:
-			# Dev fallback: if key exists in config mapping, auto-seed into DB
+			# Try auto-provision if request comes through Rapid gateway and secret matches
 			cfg = load_config()
-			if x_api_key in cfg.api_keys:
-				plan = cfg.api_keys[x_api_key]
+			rapid_secret_env = os.getenv("RAPIDAPI_PROXY_SECRET")
+			req_secret = request.headers.get("X-RapidAPI-Proxy-Secret") if request else None
+			if rapid_secret_env and req_secret and rapid_secret_env == req_secret:
+				plan = cfg.default_plan
 				# ensure a default user
 				conn.execute(
 					"INSERT OR IGNORE INTO users(id, email, created_at) VALUES(?, ?, ?)",
-					(1, "test@example.com", datetime.utcnow().isoformat() + "Z"),
+					(1, "rapid@auto.provision", datetime.utcnow().isoformat() + "Z"),
 				)
 				conn.execute(
 					"INSERT OR IGNORE INTO api_keys(user_id, key_hash, plan, active, created_at) VALUES(?, ?, ?, 1, ?)",
@@ -251,7 +253,22 @@ def validate_api_key_db(x_api_key: Optional[str] = Header(default=None, alias="X
 				conn.commit()
 				row = (plan, 1)
 			else:
-				raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or missing API key")
+				# Dev fallback: seed from config if present
+				cfg = load_config()
+				if x_api_key in cfg.api_keys:
+					plan = cfg.api_keys[x_api_key]
+					conn.execute(
+						"INSERT OR IGNORE INTO users(id, email, created_at) VALUES(?, ?, ?)",
+						(1, "test@example.com", datetime.utcnow().isoformat() + "Z"),
+					)
+					conn.execute(
+						"INSERT OR IGNORE INTO api_keys(user_id, key_hash, plan, active, created_at) VALUES(?, ?, ?, 1, ?)",
+						(1, key_hash, plan, datetime.utcnow().isoformat() + "Z"),
+					)
+					conn.commit()
+					row = (plan, 1)
+				else:
+					raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or missing API key")
 		plan, active = row
 		if not int(active):
 			raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="API key disabled")

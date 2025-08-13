@@ -109,6 +109,11 @@ class Config:
 	def logs_dir(self) -> str:
 		return self._data.get("logs_dir", os.environ.get("LOGS_DIR", "logs"))
 
+	@property
+	def default_plan(self) -> str:
+		"""Default plan to assign to unknown keys (e.g., RapidAPI consumers)."""
+		return os.environ.get("RAPIDAPI_DEFAULT_PLAN", self._data.get("default_plan", "free"))
+
 
 _config_instance: Config | None = None
 
