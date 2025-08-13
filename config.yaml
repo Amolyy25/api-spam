@@ -1,0 +1,60 @@
+api_keys:
+  test_free_key: free
+  test_pro_key: pro5k
+
+quotas:
+  # monthly quotas per plan
+  free: 100
+  pro5k: 5000
+  pro15k: 15000
+  pro50k: 50000
+
+rate_limit_per_minute:
+  free: 5
+  pro5k: 120
+  pro15k: 180
+  pro50k: 240
+
+pricing:
+  free: "0€/mois"
+  pro5k: "10€/mois"
+  pro15k: "25€/mois"
+  pro50k: "50€/mois"
+
+cache:
+  ttl_seconds: 600
+  max_size: 10000
+
+model:
+  threshold: 0.5
+  ml_weight: 0.6
+  rules_weight: 0.4
+
+regex_rules:
+  suspicious_links:
+    pattern: "(?i)https?:\\/\\/(?:www\\.)?(?:[a-z0-9\\-]+\\.)+[a-z]{2,}(?:\\/[\\w\\-\\.?=&%]*)?"
+    weight: 0.2
+  forbidden_words:
+    pattern: "(?i)free|win|winner|click here|viagra|btc|crypto|porn|xxx|lottery|urgent|guarantee|risk-free"
+    weight: 0.25
+  excessive_punctuation:
+    pattern: "([!?.])\\1{2,}"
+    weight: 0.15
+  repeated_words:
+    pattern: "\\b(\\w{3,})\\b(?:\\s+\\1\\b){2,}"
+    weight: 0.2
+
+blacklist:
+  domains:
+    - "bit.ly"
+    - "tinyurl.com"
+    - "spamdomain.com"
+  ips:
+    - "192.0.2.1"
+
+gemini:
+  enabled: false
+  model: "gemini-1.5-pro"
+  weight: 0.5
+  timeout: 8
+  # IMPORTANT: set environment variable GEMINI_API_KEY with your key 
