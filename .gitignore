@@ -132,6 +132,8 @@ dmypy.json
 data/*.db
 data/*.joblib
 data/*.csv
+!data/dataset.csv
+!data/model.joblib
 logs/*.log
 .env.local
 .env.production 
