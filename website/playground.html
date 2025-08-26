@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Playground • Spam Detector API</title>
+    <meta name="description" content="Live API playground for Spam Detector API. Paste text, send to /check, and view JSON response.">
+    <link rel="canonical" href="https://spam-detector.example.com/playground.html">
+    <meta name="theme-color" content="#0ea5e9">
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="i18n.js"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { primary: { DEFAULT: '#0ea5e9', dark: '#0284c7' } } } } }
+    </script>
+    <style>
+        .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s ease}
+        .reveal-visible{opacity:1;transform:none}
+        .code-scroll{max-height:28rem}
+        .code-scroll::-webkit-scrollbar{height:8px;width:8px}
+        .code-scroll::-webkit-scrollbar-thumb{background:#8b949e;border-radius:8px}
+        .spinner{width:16px;height:16px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .gradient-text {
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .result-card {
+            transition: all 0.3s ease;
+        }
+        .result-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .spam-indicator {
+            transition: all 0.3s ease;
+        }
+        .spam-indicator.spam {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+        .spam-indicator.ham {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
+    <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-slate-950/60 border-b border-slate-800">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between py-4">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="assets/logo.svg" alt="Spam Detector API logo" class="h-8 w-8">
+                    <span class="font-semibold tracking-tight">Spam Detector API</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-6 text-sm">
+                    <a href="docs.html" class="hover:text-primary" data-i18n="nav.docs">Docs</a>
+                    <a href="playground.html" class="text-primary" data-i18n="nav.playground">Playground</a>
+                    <a href="contact.html" class="hover:text-primary" data-i18n="nav.support">Support</a>
+                    <a id="ctaRapid" href="https://rapidapi.com/meilleramaury/api/spam-detector-api" class="inline-flex items-center rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-dark shadow transition" rel="noopener" data-i18n="cta.tryRapid">Try on RapidAPI</a>
+                    <select id="langSelect" class="ml-4 rounded-md bg-slate-900 border border-slate-700 px-2 py-1 text-xs">
+                        <option value="en">EN</option>
+                        <option value="fr">FR</option>
+                    </select>
+                </nav>
+                <button id="menuBtn" class="md:hidden inline-flex items-center justify-center rounded-md p-2 text-slate-200 hover:bg-slate-800 focus:outline-none">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+            <div id="mobileMenu" class="md:hidden hidden pb-4">
+                <div class="flex flex-col gap-3 text-sm">
+                    <a href="docs.html" class="hover:text-primary" data-i18n="nav.docs">Docs</a>
+                    <a href="playground.html" class="text-primary" data-i18n="nav.playground">Playground</a>
+                    <a href="contact.html" class="hover:text-primary" data-i18n="nav.support">Support</a>
+                    <a id="ctaRapidMobile" href="#" class="inline-flex items-center rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-dark shadow transition" rel="noopener" data-i18n="cta.tryRapid">Try on RapidAPI</a>
+                    <select id="langSelect" class="mt-3 w-24 rounded-md bg-slate-900 border border-slate-700 px-2 py-1 text-xs">
+                        <option value="en">EN</option>
+                        <option value="fr">FR</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="border-b border-slate-800 bg-slate-900/30">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight reveal gradient-text" data-i18n="play.title">API Playground</h1>
+                <p class="mt-3 text-slate-300 reveal">Test the Spam Detector API via RapidAPI. Paste text and get instant spam detection results.</p>
+                <div class="mt-4 flex items-center gap-2 text-sm text-slate-400">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Using RapidAPI endpoint with test API key</span>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 grid lg:grid-cols-2 gap-8">
+                <div class="space-y-6 reveal">
+                    <div class="bg-slate-900/60 rounded-xl border border-slate-800 p-6">
+                        <h3 class="text-lg font-semibold mb-4 text-slate-200">Test Examples</h3>
+                        <div class="space-y-3">
+                            <button class="example-btn w-full text-left p-3 rounded-lg border border-slate-700 bg-slate-800 hover:border-primary hover:bg-slate-700 transition-colors" data-text="Win a free iPhone now!!! Click here to claim your prize!">
+                                <div class="font-medium text-slate-200">Spam Example</div>
+                                <div class="text-sm text-slate-400">"Win a free iPhone now!!! Click here to claim your prize!"</div>
+                            </button>
+                            <button class="example-btn w-full text-left p-3 rounded-lg border border-slate-700 bg-slate-800 hover:border-primary hover:bg-slate-700 transition-colors" data-text="Hi John, just wanted to check if you received the meeting notes from yesterday. Let me know if you need anything else.">
+                                <div class="font-medium text-slate-200">Legitimate Example</div>
+                                <div class="text-sm text-slate-400">"Hi John, just wanted to check if you received the meeting notes..."</div>
+                            </button>
+                            <button class="example-btn w-full text-left p-3 rounded-lg border border-slate-700 bg-slate-800 hover:border-primary hover:bg-slate-700 transition-colors" data-text="URGENT: Your account has been suspended. Click here immediately to verify your identity or lose access forever!">
+                                <div class="font-medium text-slate-200">Phishing Example</div>
+                                <div class="text-sm text-slate-400">"URGENT: Your account has been suspended. Click here immediately..."</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <form id="playgroundForm" class="space-y-6" autocomplete="off">
+                        <label class="block text-sm">
+                            <span class="text-slate-300" data-i18n="play.text_label">Text to Analyze</span>
+                            <textarea id="textToCheck" rows="6" placeholder="Paste a message to check for spam, phishing, or scam content..." class="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-slate-100 placeholder-slate-500 focus:border-primary focus:ring-0 focus:outline-none" required></textarea>
+                        </label>
+                        
+                        <div class="flex flex-wrap items-center gap-3">
+                            <button id="submitBtn" type="submit" class="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-semibold text-white hover:bg-primary-dark shadow transition disabled:opacity-50 disabled:cursor-not-allowed">
+                                <span data-i18n="play.btn_check">Check Spam</span>
+                                <span class="spinner hidden" id="spinner"></span>
+                            </button>
+                            <button id="clearBtn" type="button" class="inline-flex items-center rounded-lg border border-slate-700 px-4 py-2 text-sm hover:border-red-400 hover:text-red-400 transition-colors" data-i18n="play.btn_clear">Clear</button>
+                        </div>
+                        
+                        <div id="status" class="text-sm text-slate-400"></div>
+                    </form>
+                </div>
+
+                <div class="space-y-6 reveal">
+                    <!-- Quick Result Card -->
+                    <div id="quickResult" class="hidden">
+                        <div class="bg-slate-900/60 rounded-xl border border-slate-800 p-6 result-card">
+                            <h3 class="text-lg font-semibold mb-4 text-slate-200">Analysis Result</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-300">Status:</span>
+                                    <div id="spamIndicator" class="spam-indicator px-3 py-1 rounded-full text-sm font-medium">
+                                        <span id="spamText">Analyzing...</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-300">Confidence:</span>
+                                    <span id="confidenceText" class="text-slate-200 font-medium">-</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-300">Response Time:</span>
+                                    <span id="responseTime" class="text-slate-200 font-medium">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Test Different Headers -->
+                    <div class="bg-slate-900/60 rounded-xl border border-slate-800 p-4">
+                        <h3 class="text-sm font-semibold mb-3 text-slate-300">Test Different Headers</h3>
+                        <div class="space-y-2 text-xs text-slate-400">
+                            <div><strong>Current API Key:</strong> <code class="bg-slate-800 px-1 rounded">${API_CONFIG.apiKey.substring(0, 8)}...</code></div>
+                            <div><strong>Endpoint:</strong> <code class="bg-slate-800 px-1 rounded">${API_CONFIG.baseUrl}${API_CONFIG.endpoint}</code></div>
+                            <div><strong>Status:</strong> <span id="testStatus" class="text-slate-300">Ready</span></div>
+                        </div>
+                        <div class="mt-3 flex gap-2">
+                            <button id="testRapidAPI" class="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded transition-colors">
+                                Test RapidAPI Headers
+                            </button>
+                            <button id="testXAPIKey" class="text-xs bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded transition-colors">
+                                Test X-API-Key
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Response -->
+                    <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-5 code-scroll overflow-auto">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="text-xs uppercase text-slate-400" data-i18n="play.json_response">API Response</div>
+                            <button id="copyBtn" class="text-xs text-slate-400 hover:text-primary transition-colors" style="display: none;">
+                                Copy JSON
+                            </button>
+                        </div>
+                        <pre id="response" class="text-xs leading-relaxed whitespace-pre-wrap text-slate-300"></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-900/50">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 text-sm text-slate-400 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+                © <span id="year"></span> Spam Detector API
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="docs.html" class="hover:text-primary">Docs</a>
+                <a href="playground.html" class="text-primary">Playground</a>
+                <a href="contact.html" class="hover:text-primary">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="site.js"></script>
+    <script>
+        // Configuration de l'API
+        const API_CONFIG = {
+            baseUrl: 'https://spam-detector-api.p.rapidapi.com',
+            apiKey: '1a72e14de2mshd351fc79bf0dd5cp15021bjsn457564b9dbfe', // Clé de test intégrée
+            endpoint: '/check'
+        };
+
+        // Gestion des exemples
+        document.querySelectorAll('.example-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const text = btn.getAttribute('data-text');
+                document.getElementById('textToCheck').value = text;
+                // Auto-submit après un court délai
+                setTimeout(() => {
+                    document.getElementById('playgroundForm').dispatchEvent(new Event('submit'));
+                }, 300);
+            });
+        });
+
+        // Gestion du formulaire
+        document.getElementById('playgroundForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const text = document.getElementById('textToCheck').value.trim();
+            const status = document.getElementById('status');
+            const spinner = document.getElementById('spinner');
+            const submitBtn = document.getElementById('submitBtn');
+            const quickResult = document.getElementById('quickResult');
+            const copyBtn = document.getElementById('copyBtn');
+            
+            if (!text) {
+                status.textContent = 'Please enter text to analyze.';
+                return;
+            }
+            
+            // Reset UI
+            status.textContent = 'Analyzing text...';
+            spinner.classList.remove('hidden');
+            submitBtn.setAttribute('disabled', 'true');
+            quickResult.classList.add('hidden');
+            copyBtn.style.display = 'none';
+            
+            const startTime = Date.now();
+            
+            try {
+                // Essayer d'abord avec les en-têtes RapidAPI standard
+                let response;
+                let headersUsed = 'rapidapi_standard';
+                
+                try {
+                    response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoint}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-RapidAPI-Key': API_CONFIG.apiKey,
+                            'X-RapidAPI-Host': 'spam-detector-api.p.rapidapi.com'
+                        },
+                        body: JSON.stringify({ text })
+                    });
+                } catch (error) {
+                    // Si ça échoue, essayer avec X-API-Key
+                    console.log('RapidAPI headers failed, trying X-API-Key...');
+                    response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoint}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-API-Key': API_CONFIG.apiKey
+                        },
+                        body: JSON.stringify({ text })
+                    });
+                    headersUsed = 'x_api_key';
+                }
+                
+                const responseTime = Date.now() - startTime;
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Afficher le résultat rapide
+                    const isSpam = data.is_spam;
+                    const confidence = data.confidence;
+                    
+                    document.getElementById('spamIndicator').className = `spam-indicator px-3 py-1 rounded-full text-sm font-medium ${isSpam ? 'spam' : 'ham'}`;
+                    document.getElementById('spamText').textContent = isSpam ? 'SPAM' : 'LEGITIMATE';
+                    document.getElementById('confidenceText').textContent = confidence ? `${(confidence * 100).toFixed(1)}%` : 'N/A';
+                    document.getElementById('responseTime').textContent = `${responseTime}ms`;
+                    
+                    quickResult.classList.remove('hidden');
+                    
+                    // Afficher la réponse complète
+                    const prettyResponse = JSON.stringify({
+                        status: response.status,
+                        ok: response.ok,
+                        responseTime: `${responseTime}ms`,
+                        headersUsed: headersUsed,
+                        data: data
+                    }, null, 2);
+                    
+                    document.getElementById('response').textContent = prettyResponse;
+                    copyBtn.style.display = 'block';
+                    
+                    status.textContent = `Analysis complete in ${responseTime}ms (${headersUsed})`;
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                    
+            } catch (error) {
+                console.error('API Error:', error);
+                
+                let errorMessage = 'Request failed';
+                let errorDetails = error.message;
+                
+                if (error.message.includes('Failed to fetch')) {
+                    errorMessage = 'Network error';
+                    errorDetails = 'Unable to reach the API server';
+                } else if (error.message.includes('401')) {
+                    errorMessage = 'Authentication failed';
+                    errorDetails = 'API key may be invalid or expired. Please check your RapidAPI subscription.';
+                }
+                
+                document.getElementById('response').textContent = JSON.stringify({
+                    error: errorMessage,
+                    details: errorDetails,
+                    timestamp: new Date().toISOString(),
+                    troubleshooting: {
+                        suggestion: 'Try checking your RapidAPI subscription status',
+                        rapidapi_url: 'https://rapidapi.com/meilleramaury/api/spam-detector-api',
+                        api_key_length: API_CONFIG.apiKey.length,
+                        api_key_start: API_CONFIG.apiKey.substring(0, 8) + '...'
+                    },
+                    request: {
+                        url: `${API_CONFIG.baseUrl}${API_CONFIG.endpoint}`,
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-RapidAPI-Key': API_CONFIG.apiKey,
+                            'X-RapidAPI-Host': 'spam-detector-api.p.rapidapi.com'
+                        },
+                        body: { text }
+                    }
+                }, null, 2);
+                
+                status.textContent = errorMessage;
+                copyBtn.style.display = 'block';
+            } finally {
+                spinner.classList.add('hidden');
+                submitBtn.removeAttribute('disabled');
+            }
+        });
+
+        // Bouton Clear
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            document.getElementById('textToCheck').value = '';
+            document.getElementById('response').textContent = '';
+            document.getElementById('status').textContent = '';
+            document.getElementById('quickResult').classList.add('hidden');
+            document.getElementById('copyBtn').style.display = 'none';
+        });
+
+        // Bouton Copy
+        document.getElementById('copyBtn').addEventListener('click', async () => {
+            const responseText = document.getElementById('response').textContent;
+            try {
+                await navigator.clipboard.writeText(responseText);
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                copyBtn.classList.add('text-green-400');
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.classList.remove('text-green-400');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+            }
+        });
+
+        // Test RapidAPI Headers
+        document.getElementById('testRapidAPI').addEventListener('click', async () => {
+            const testStatus = document.getElementById('testStatus');
+            const response = document.getElementById('response');
+            
+            testStatus.textContent = 'Testing RapidAPI headers...';
+            
+            try {
+                const res = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-RapidAPI-Key': API_CONFIG.apiKey,
+                        'X-RapidAPI-Host': 'spam-detector-api.p.rapidapi.com'
+                    },
+                    body: JSON.stringify({ text: 'Test message' })
+                });
+                
+                const data = await res.json();
+                testStatus.textContent = `RapidAPI: ${res.status} ${res.statusText}`;
+                
+                response.textContent = JSON.stringify({
+                    test: 'RapidAPI Headers',
+                    status: res.status,
+                    ok: res.ok,
+                    data: data
+                }, null, 2);
+                
+                document.getElementById('copyBtn').style.display = 'block';
+                
+            } catch (error) {
+                testStatus.textContent = 'RapidAPI: Failed';
+                response.textContent = JSON.stringify({
+                    test: 'RapidAPI Headers',
+                    error: error.message
+                }, null, 2);
+                document.getElementById('copyBtn').style.display = 'block';
+            }
+        });
+
+        // Test X-API-Key
+        document.getElementById('testXAPIKey').addEventListener('click', async () => {
+            const testStatus = document.getElementById('testStatus');
+            const response = document.getElementById('response');
+            
+            testStatus.textContent = 'Testing X-API-Key...';
+            
+            try {
+                const res = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_CONFIG.apiKey
+                    },
+                    body: JSON.stringify({ text: 'Test message' })
+                });
+                
+                const data = await res.json();
+                testStatus.textContent = `X-API-Key: ${res.status} ${res.statusText}`;
+                
+                response.textContent = JSON.stringify({
+                    test: 'X-API-Key Header',
+                    status: res.status,
+                    ok: res.ok,
+                    data: data
+                }, null, 2);
+                
+                document.getElementById('copyBtn').style.display = 'block';
+                
+            } catch (error) {
+                testStatus.textContent = 'X-API-Key: Failed';
+                response.textContent = JSON.stringify({
+                    test: 'X-API-Key Header',
+                    error: error.message
+                }, null, 2);
+                document.getElementById('copyBtn').style.display = 'block';
+            }
+        });
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set current year
+            document.getElementById('year').textContent = new Date().getFullYear();
+            
+            // Focus sur le textarea
+            document.getElementById('textToCheck').focus();
+            
+            // Animation des éléments
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal-visible');
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
+
+

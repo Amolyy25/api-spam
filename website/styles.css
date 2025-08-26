@@ -1,0 +1,69 @@
+/* Global enhancement styles for color and motion. Tailwind remains via CDN. */
+
+:root {
+  --c-primary: #0ea5e9;
+  --c-primary-dark: #0284c7;
+  --c-accent: #22c55e;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(90deg, var(--c-primary) 0%, var(--c-accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Fancy gradient border card */
+.fancy-card {
+  position: relative;
+  border: 1px solid transparent;
+  background: linear-gradient(#0b1220, #0b1220) padding-box,
+              linear-gradient(120deg, rgba(14,165,233,.6), rgba(34,197,94,.6)) border-box;
+  border-radius: 0.75rem; /* 12px */
+}
+.fancy-card:hover {
+  box-shadow: 0 0 0 3px rgba(14,165,233,0.12), 0 10px 30px rgba(2,132,199,0.15);
+  transform: translateY(-2px);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+/* CTA button with glow */
+.btn-cta {
+  background-image: linear-gradient(90deg, var(--c-primary), var(--c-accent));
+  box-shadow: 0 8px 24px rgba(14,165,233,0.25);
+}
+.btn-cta:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.btn-cta:active { transform: translateY(0); }
+
+/* Animated blob behind hero */
+.hero-blob {
+  position: absolute;
+  inset: auto -25% -80px -25%;
+  height: 320px;
+  background: radial-gradient(closest-side, rgba(14,165,233,0.28), transparent 70%),
+              radial-gradient(closest-side, rgba(34,197,94,0.22), transparent 70%);
+  filter: blur(40px);
+  animation: blob-move 12s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes blob-move {
+  from { transform: translateY(0) scale(1); opacity: .8; }
+  to   { transform: translateY(-30px) scale(1.05); opacity: 1; }
+}
+
+/* Subtle grid overlay for hero */
+.grid-overlay {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(148,163,184,0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.6), rgba(0,0,0,0));
+  pointer-events: none;
+}
+
+/* Floating animation for images */
+.float-y { animation: float-y 6s ease-in-out infinite; }
+@keyframes float-y { 0%{ transform: translateY(0) } 50%{ transform: translateY(-8px) } 100%{ transform: translateY(0) } }
+
+
+

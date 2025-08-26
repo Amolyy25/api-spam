@@ -53,8 +53,8 @@ blacklist:
     - "192.0.2.1"
 
 gemini:
-  enabled: false
-  model: "gemini-1.5-pro"
+  enabled: true
+  model: "gemini-2.0-flash"
   weight: 0.5
   timeout: 8
   # IMPORTANT: set environment variable GEMINI_API_KEY with your key 

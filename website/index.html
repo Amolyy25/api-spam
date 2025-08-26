@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spam Detector API – Real-time Spam, Phishing, and Scam Detection</title>
+    <meta name="description" content="Spam Detector API on RapidAPI: real-time detection of spam, phishing, and scams with high accuracy, fast response, and AI-powered analysis.">
+    <meta name="keywords" content="spam detection api, phishing detection, scam detection, rapidapi, ai spam filter, content moderation, anti-spam api">
+    <link rel="canonical" href="https://spam-detector.example.com/">
+    <meta property="og:title" content="Spam Detector API – Real-time Spam, Phishing, and Scam Detection">
+    <meta property="og:description" content="High-accuracy, low-latency spam detection API. Try on RapidAPI and integrate in minutes.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://spam-detector.example.com/">
+    <meta property="og:image" content="assets/hero-illustration.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Spam Detector API">
+    <meta name="twitter:description" content="Real-time Spam, Phishing, and Scam Detection.">
+    <meta name="theme-color" content="#0ea5e9">
+
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="i18n.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#0ea5e9',
+                            dark: '#0284c7'
+                        },
+                        accent: '#22c55e'
+                    },
+                    boxShadow: {
+                        glow: '0 0 0 3px rgba(14,165,233,0.25)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s ease}
+        .reveal-visible{opacity:1;transform:none}
+        .code-scroll::-webkit-scrollbar{height:8px}
+        .code-scroll::-webkit-scrollbar-thumb{background:#8b949e;border-radius:8px}
+    </style>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
+    <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-slate-950/60 border-b border-slate-800">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between py-4">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="assets/logo.svg" alt="Spam Detector API logo" class="h-8 w-8">
+                    <span class="font-semibold tracking-tight">Spam Detector API</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-6 text-sm">
+                    <a href="docs.html" class="hover:text-primary" data-i18n="nav.docs">Docs</a>
+                    <a href="playground.html" class="hover:text-primary" data-i18n="nav.playground">Playground</a>
+                    <a href="contact.html" class="hover:text-primary" data-i18n="nav.support">Support</a>
+                    <a id="ctaRapid" href="https://rapidapi.com/meilleramaury/api/spam-detector-api" class="inline-flex items-center rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-dark shadow hover:shadow-glow transition" rel="noopener" data-i18n="cta.tryRapid">Try on RapidAPI</a>
+                    <select id="langSelect" class="ml-4 rounded-md bg-slate-900 border border-slate-700 px-2 py-1 text-xs">
+                        <option value="en">EN</option>
+                        <option value="fr">FR</option>
+                    </select>
+                </nav>
+                <button id="menuBtn" class="md:hidden inline-flex items-center justify-center rounded-md p-2 text-slate-200 hover:bg-slate-800 focus:outline-none">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+            <div id="mobileMenu" class="md:hidden hidden pb-4">
+                <div class="flex flex-col gap-3 text-sm">
+                    <a href="docs.html" class="hover:text-primary" data-i18n="nav.docs">Docs</a>
+                    <a href="playground.html" class="hover:text-primary" data-i18n="nav.playground">Playground</a>
+                    <a href="contact.html" class="hover:text-primary" data-i18n="nav.support">Support</a>
+                    <a id="ctaRapidMobile" href="#" class="inline-flex items-center rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-dark shadow transition" rel="noopener" data-i18n="cta.tryRapid">Try on RapidAPI</a>
+                    <select id="langSelect" class="mt-3 w-24 rounded-md bg-slate-900 border border-slate-700 px-2 py-1 text-xs">
+                        <option value="en">EN</option>
+                        <option value="fr">FR</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="relative overflow-hidden">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-12 items-center py-16 sm:py-20">
+                    <div class="reveal">
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight gradient-text">
+                            Spam Detector API – Real-time Spam, Phishing, and Scam Detection
+                        </h1>
+                        <p class="mt-4 text-slate-300 text-base sm:text-lg">
+                            Integrate robust, AI-powered content moderation in minutes. High accuracy, low latency, and built-in heuristics for links, keywords, and anomalies.
+                        </p>
+                        <div class="mt-8 flex flex-wrap items-center gap-3">
+                            <a id="ctaRapidHero" href="https://rapidapi.com/meilleramaury/api/spam-detector-api" class="inline-flex items-center rounded-lg px-5 py-3 font-semibold text-white btn-cta transition" rel="noopener">Try on RapidAPI</a>
+                            <a href="/website/docs.html" class="inline-flex items-center rounded-lg border border-slate-700 px-5 py-3 font-semibold text-slate-100 hover:border-primary hover:text-primary transition">Read Docs</a>
+                            <a href="/website/playground.html" class="inline-flex items-center rounded-lg border border-slate-700 px-5 py-3 font-semibold text-slate-100 hover:border-primary hover:text-primary transition">Live Playground</a>
+                        </div>
+                        <div class="mt-6 text-xs text-slate-400">
+                            No credit card for Free plan • CORS enabled • JSON over HTTPS
+                        </div>
+                    </div>
+                    <div class="relative reveal">
+                        <div class="grid-overlay"></div>
+                        <img src="assets/hero-illustration.svg" alt="Spam Detector API illustration" class="w-full h-auto float-y">
+                    </div>
+                </div>
+            </div>
+            <div class="pointer-events-none absolute inset-x-0 -bottom-24 h-48 bg-gradient-to-b from-primary/10 to-transparent blur-2xl"></div>
+            <div class="hero-blob"></div>
+        </section>
+
+        <!-- Why Choose Us -->
+        <section class="border-t border-slate-800 bg-slate-900/30">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight reveal">Why Choose Us?</h2>
+                <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="reveal fancy-card p-6 transition">
+                        <div class="flex items-center gap-3">
+                            <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/20 text-primary">⚙️</span>
+                            <h3 class="font-semibold">High Accuracy</h3>
+                        </div>
+                        <p class="mt-3 text-sm text-slate-300">Hybrid AI + rules engine with tunable thresholds for reliable detection.</p>
+                    </div>
+                    <div class="reveal fancy-card p-6 transition">
+                        <div class="flex items-center gap-3">
+                            <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/20 text-primary">⚡</span>
+                            <h3 class="font-semibold">Fast Response</h3>
+                        </div>
+                        <p class="mt-3 text-sm text-slate-300">Low-latency inference with caching and rate limiting per plan.</p>
+                    </div>
+                    <div class="reveal fancy-card p-6 transition">
+                        <div class="flex items-center gap-3">
+                            <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/20 text-primary">🧠</span>
+                            <h3 class="font-semibold">AI-Powered</h3>
+                        </div>
+                        <p class="mt-3 text-sm text-slate-300">Advanced heuristics for suspicious links, forbidden words, and punctuation patterns.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Highlight -->
+        <section class="border-t border-slate-800 bg-slate-900">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+                <div class="reveal text-center">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold" data-i18n="pricing.title">Simple, transparent pricing</h2>
+                    <p class="mt-2 text-slate-300" data-i18n="pricing.subtitle">Scale from hobby to production. Upgrade anytime on RapidAPI.</p>
+                </div>
+                <div class="mt-10 grid md:grid-cols-4 gap-6">
+                    <!-- Free -->
+                    <div class="reveal fancy-card p-6 flex flex-col">
+                        <h3 class="text-lg font-semibold" data-i18n="plan.free">Free</h3>
+                        <div class="mt-2 text-3xl font-extrabold" id="price-free">0€/mois</div>
+                        <ul class="mt-4 space-y-2 text-sm text-slate-300">
+                            <li><span id="quota-free">100</span> <span data-i18n="pricing.req_per_month">req / month</span></li>
+                            <li><span id="rpm-free">5</span> <span data-i18n="pricing.req_per_minute">req / minute</span></li>
+                        </ul>
+                        <a id="buy-free" href="https://rapidapi.com/meilleramaury/api/spam-detector-api/pricing" class="mt-6 inline-flex items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm hover:border-primary hover:text-primary" data-i18n="plan.start_free">Start Free</a>
+                    </div>
+                    <!-- Pro 5k -->
+                    <div class="reveal fancy-card p-6 flex flex-col shadow-glow" style="border-image: linear-gradient(120deg, rgba(34,197,94,.8), rgba(14,165,233,.8)) 1;">
+                        <h3 class="text-lg font-semibold" data-i18n="plan.pro5k">Pro 5k</h3>
+                        <div class="mt-2 text-3xl font-extrabold" id="price-pro5k">10€/mois</div>
+                        <ul class="mt-4 space-y-2 text-sm text-slate-300">
+                            <li><span id="quota-pro5k">5000</span> <span data-i18n="pricing.req_per_month">req / month</span></li>
+                            <li><span id="rpm-pro5k">120</span> <span data-i18n="pricing.req_per_minute">req / minute</span></li>
+                        </ul>
+                        <a id="buy-pro5k" href="https://rapidapi.com/meilleramaury/api/spam-detector-api/pricing" class="mt-6 inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-dark" data-i18n="plan.choose_pro5k">Choose Pro 5k</a>
+                    </div>
+                    <!-- Pro 15k -->
+                    <div class="reveal fancy-card p-6 flex flex-col">
+                        <h3 class="text-lg font-semibold" data-i18n="plan.pro15k">Pro 15k</h3>
+                        <div class="mt-2 text-3xl font-extrabold" id="price-pro15k">25€/mois</div>
+                        <ul class="mt-4 space-y-2 text-sm text-slate-300">
+                            <li><span id="quota-pro15k">15000</span> <span data-i18n="pricing.req_per_month">req / month</span></li>
+                            <li><span id="rpm-pro15k">180</span> <span data-i18n="pricing.req_per_minute">req / minute</span></li>
+                        </ul>
+                        <a id="buy-pro15k" href="https://rapidapi.com/meilleramaury/api/spam-detector-api/pricing" class="mt-6 inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-dark" data-i18n="plan.choose_pro15k">Choose Pro 15k</a>
+                    </div>
+                    <!-- Pro 50k -->
+                    <div class="reveal fancy-card p-6 flex flex-col">
+                        <h3 class="text-lg font-semibold" data-i18n="plan.pro50k">Pro 50k</h3>
+                        <div class="mt-2 text-3xl font-extrabold" id="price-pro50k">50€/mois</div>
+                        <ul class="mt-4 space-y-2 text-sm text-slate-300">
+                            <li><span id="quota-pro50k">50000</span> <span data-i18n="pricing.req_per_month">req / month</span></li>
+                            <li><span id="rpm-pro50k">240</span> <span data-i18n="pricing.req_per_minute">req / minute</span></li>
+                        </ul>
+                        <a id="buy-pro50k" href="https://rapidapi.com/meilleramaury/api/spam-detector-api/pricing   " class="mt-6 inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-dark" data-i18n="plan.choose_pro50k">Choose Pro 50k</a>
+                    </div>
+                </div>
+                <p class="reveal mt-4 text-center text-xs text-slate-400" data-i18n="pricing.note">Prices and limits are managed on RapidAPI. Taxes may apply.</p>
+            </div>
+        </section>
+
+        <!-- Examples / Testimonials -->
+        <section class="border-t border-slate-800">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+                <div class="grid lg:grid-cols-2 gap-10 items-start">
+                    <div class="reveal">
+                        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight" data-i18n="home.examples_title">Real Messages. Real Detection.</h2>
+                        <p class="mt-3 text-slate-300">Examples of typical inputs and what our API returns.</p>
+                        <div class="mt-6 space-y-4">
+                            <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
+                                <div class="text-xs uppercase text-slate-400" data-i18n="home.examples.input">Input</div>
+                                <p class="mt-1 text-sm">Congratulations! You WON a free iPhone. Click here: http://bit.ly/win-123</p>
+                                <div class="mt-3 text-xs uppercase text-slate-400" data-i18n="home.examples.result">Result</div>
+                                <div class="mt-1 inline-flex items-center gap-2 rounded-full bg-red-500/10 px-3 py-1 text-red-400 text-xs">spam: 0.97 • reason: forbidden_words, suspicious_links</div>
+                            </div>
+                            <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
+                                <div class="text-xs uppercase text-slate-400" data-i18n="home.examples.input">Input</div>
+                                <p class="mt-1 text-sm">Hi John, please see attached the invoice for this month. Thanks!</p>
+                                <div class="mt-3 text-xs uppercase text-slate-400" data-i18n="home.examples.result">Result</div>
+                                <div class="mt-1 inline-flex items-center gap-2 rounded-full bg-green-500/10 px-3 py-1 text-green-400 text-xs">ham: 0.02 • reason: clean</div>
+                            </div>
+                            <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
+                                <div class="text-xs uppercase text-slate-400" data-i18n="home.examples.input">Input</div>
+                                <p class="mt-1 text-sm">URGENT!!! Your account will be closed. Verify now!!!</p>
+                                <div class="mt-3 text-xs uppercase text-slate-400" data-i18n="home.examples.result">Result</div>
+                                <div class="mt-1 inline-flex items-center gap-2 rounded-full bg-yellow-500/10 px-3 py-1 text-yellow-400 text-xs">likely_spam: 0.78 • reason: excessive_punctuation</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reveal rounded-xl border border-slate-800 bg-slate-900/60 p-6 code-scroll overflow-auto">
+                        <pre class="text-xs leading-relaxed"><code>// JavaScript (fetch)
+fetch('https://api-spam-ui90.onrender.com/check', {
+  method: 'POST',
+  headers: {
+    'content-type': 'application/json',
+    'X-API-Key': '<YOUR_KEY>'
+  },
+  body: JSON.stringify({ text: 'Hello world' })
+}).then(r => r.json()).then(console.log);
+
+// Python (requests)
+import requests
+resp = requests.post('https://api-spam-ui90.onrender.com/check',
+  headers={'X-API-Key': '<YOUR_KEY>'},
+  json={'text': 'Hello world'})
+print(resp.json())
+
+// curl
+curl -X POST 'https://api-spam-ui90.onrender.com/check' \
+  -H 'content-type: application/json' \
+  -H 'X-API-Key: <YOUR_KEY>' \
+  -d '{"text":"Hello world"}'
+                        </code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-900/50">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 text-sm text-slate-400 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+                © <span id="year"></span> Spam Detector API • Built with ❤️
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="docs.html" class="hover:text-primary">Docs</a>
+                <a href="playground.html" class="hover:text-primary">Playground</a>
+                <a href="contact.html" class="hover:text-primary">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="site.js"></script>
+</body>
+</html>
+
+

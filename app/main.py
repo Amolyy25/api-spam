@@ -2,7 +2,8 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from fastapi import Depends, FastAPI, HTTPException, Request
 from pydantic import BaseModel, Field
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 from .auth import enforce_quota_and_rate, increment_usage, init_usage_store, get_usage_count, increment_rate, validate_api_key_db, seed_test_keys
 from .config import load_config
@@ -48,6 +49,41 @@ async def startup_event() -> None:
 	init_usage_store()
 	seed_test_keys()
 	get_service()
+
+# Serve the static website under /site
+app.mount("/site", StaticFiles(directory="website", html=True), name="site")
+
+
+@app.get("/", include_in_schema=False)
+async def root_redirect() -> RedirectResponse:
+    """Redirect the root to the static landing page."""
+    return RedirectResponse(url="/site/index.html", status_code=307)
+
+
+@app.get("/index.html", include_in_schema=False)
+async def legacy_index() -> RedirectResponse:
+	return RedirectResponse(url="/site/index.html", status_code=307)
+
+
+@app.get("/docs.html", include_in_schema=False)
+async def legacy_docs() -> RedirectResponse:
+	return RedirectResponse(url="/site/docs.html", status_code=307)
+
+
+@app.get("/playground.html", include_in_schema=False)
+async def legacy_playground() -> RedirectResponse:
+	return RedirectResponse(url="/site/playground.html", status_code=307)
+
+
+@app.get("/contact.html", include_in_schema=False)
+async def legacy_contact() -> RedirectResponse:
+	return RedirectResponse(url="/site/contact.html", status_code=307)
+
+
+@app.get("/website/{path:path}", include_in_schema=False)
+async def legacy_website(path: str) -> RedirectResponse:
+	# Support old absolute links like /website/index.html
+	return RedirectResponse(url=f"/site/{path}", status_code=307)
 
 
 @app.exception_handler(HTTPException)

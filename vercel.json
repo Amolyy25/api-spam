@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "public": true,
+  "builds": [
+    { "src": "website/**", "use": "@vercel/static" }
+  ],
+  "functions": {
+    "vercel_functions/**.js": {
+      "runtime": "edge"
+    }
+  },
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/proxy-check", "dest": "/vercel_functions/proxy-check.js" },
+    { "src": "/", "dest": "/website/index.html" },
+    { "src": "/docs.html", "dest": "/website/docs.html" },
+    { "src": "/playground.html", "dest": "/website/playground.html" },
+    { "src": "/contact.html", "dest": "/website/contact.html" },
+    { "src": "/assets/(.*)", "dest": "/website/assets/$1" },
+    { "src": "/(config|site).js", "dest": "/website/$1.js" }
+  ]
+}
+
+

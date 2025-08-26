@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Docs • Spam Detector API</title>
+    <meta name="description" content="Documentation for Spam Detector API on RapidAPI. Endpoints, examples, error codes, and pricing.">
+    <link rel="canonical" href="https://spam-detector.example.com/docs.html">
+    <meta name="theme-color" content="#0ea5e9">
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="i18n.js"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { primary: { DEFAULT: '#0ea5e9', dark: '#0284c7' } } } }
+        }
+    </script>
+    <style>
+        .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s ease}
+        .reveal-visible{opacity:1;transform:none}
+        .code-scroll{max-height:32rem}
+        .code-scroll::-webkit-scrollbar{height:8px;width:8px}
+        .code-scroll::-webkit-scrollbar-thumb{background:#8b949e;border-radius:8px}
+    </style>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
+    <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-slate-950/60 border-b border-slate-800">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between py-4">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="assets/logo.svg" alt="Spam Detector API logo" class="h-8 w-8">
+                    <span class="font-semibold tracking-tight">Spam Detector API</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-6 text-sm">
+                    <a href="docs.html" class="text-primary" data-i18n="nav.docs">Docs</a>
+                    <a href="playground.html" class="hover:text-primary" data-i18n="nav.playground">Playground</a>
+                    <a href="contact.html" class="hover:text-primary" data-i18n="nav.support">Support</a>
+                    <a id="ctaRapid" href="#" class="inline-flex items-center rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-dark shadow transition" rel="noopener" data-i18n="cta.tryRapid">Try on RapidAPI</a>
+                    <select id="langSelect" class="ml-4 rounded-md bg-slate-900 border border-slate-700 px-2 py-1 text-xs">
+                        <option value="en">EN</option>
+                        <option value="fr">FR</option>
+                    </select>
+                </nav>
+                <button id="menuBtn" class="md:hidden inline-flex items-center justify-center rounded-md p-2 text-slate-200 hover:bg-slate-800 focus:outline-none">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+            <div id="mobileMenu" class="md:hidden hidden pb-4">
+                <div class="flex flex-col gap-3 text-sm">
+                    <a href="docs.html" class="text-primary" data-i18n="nav.docs">Docs</a>
+                    <a href="playground.html" class="hover:text-primary" data-i18n="nav.playground">Playground</a>
+                    <a href="contact.html" class="hover:text-primary" data-i18n="nav.support">Support</a>
+                    <a id="ctaRapidMobile" href="#" class="inline-flex items-center rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-dark shadow transition" rel="noopener" data-i18n="cta.tryRapid">Try on RapidAPI</a>
+                    <select id="langSelect" class="mt-3 w-24 rounded-md bg-slate-900 border border-slate-700 px-2 py-1 text-xs">
+                        <option value="en">EN</option>
+                        <option value="fr">FR</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="border-b border-slate-800 bg-slate-900/30">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight reveal gradient-text" data-i18n="docs.title">API Documentation</h1>
+                <p class="mt-3 text-slate-300 reveal" data-i18n="home.hero_sub">Everything you need to integrate the Spam Detector API.</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 grid lg:grid-cols-3 gap-8">
+                <aside class="lg:col-span-1">
+                    <nav class="sticky top-24 space-y-2 text-sm">
+                        <a href="#endpoints" class="block hover:text-primary" data-i18n="docs.endpoints">Endpoints</a>
+                        <a href="#examples" class="block hover:text-primary" data-i18n="docs.examples">Examples</a>
+                        <a href="#errors" class="block hover:text-primary" data-i18n="docs.errors">Error Codes</a>
+                        <a href="#pricing" class="block hover:text-primary" data-i18n="docs.pricing">Pricing</a>
+                    </nav>
+                </aside>
+                <div class="lg:col-span-2 space-y-12">
+                    <section id="endpoints" class="reveal">
+                        <h2 class="text-2xl font-bold" data-i18n="docs.endpoints">Endpoints</h2>
+                        <div class="mt-4 overflow-hidden rounded-xl border border-slate-800 bg-slate-900/50">
+                            <div class="border-b border-slate-800 px-4 py-3 text-sm text-slate-400">Base URL</div>
+                            <div class="px-4 py-4">
+                                <code class="rounded bg-slate-800 px-2 py-1 text-sm">https://api-spam-ui90.onrender.com</code>
+                            </div>
+                            <div class="border-t border-slate-800 px-4 py-3 text-sm text-slate-400">POST /check</div>
+                            <div class="px-4 py-4 text-sm">
+                                Request body: <code class="rounded bg-slate-800 px-1 py-0.5">{ text: string }</code><br>
+                                Response: <code class="rounded bg-slate-800 px-1 py-0.5">{ label: 'spam'|'ham'|'likely_spam', score: number, reasons: string[] }</code>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="examples" class="reveal">
+                        <h2 class="text-2xl font-bold" data-i18n="docs.examples">Usage Examples</h2>
+                        <div class="mt-4 grid gap-6">
+                            <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-5 code-scroll overflow-auto">
+<pre><code># curl
+curl -X POST 'https://api-spam-ui90.onrender.com/check' \
+  -H 'content-type: application/json' \
+  -H 'X-API-Key: &lt;YOUR_KEY&gt;' \
+  -d '{"text":"Hello from curl"}'
+</code></pre>
+                            </div>
+                            <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-5 code-scroll overflow-auto">
+<pre><code>// JavaScript (fetch)
+async function checkSpam(text) {
+  const res = await fetch('https://api-spam-ui90.onrender.com/check', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'X-API-Key': '&lt;YOUR_KEY&gt;'
+    },
+    body: JSON.stringify({ text })
+  });
+  return res.json();
+}
+</code></pre>
+                            </div>
+                            <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-5 code-scroll overflow-auto">
+<pre><code># Python (requests)
+import requests
+
+url = 'https://api-spam-ui90.onrender.com/check'
+headers = {
+  'X-API-Key': '&lt;YOUR_KEY&gt;',
+  'content-type': 'application/json'
+}
+payload = { 'text': 'Hello from Python' }
+resp = requests.post(url, headers=headers, json=payload)
+print(resp.status_code)
+print(resp.json())
+</code></pre>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="errors" class="reveal">
+                        <h2 class="text-2xl font-bold" data-i18n="docs.errors">Error Codes</h2>
+                        <div class="mt-4 grid sm:grid-cols-2 gap-4">
+                            <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-4 text-sm">
+                                <div class="font-semibold text-red-400">400 Bad Request</div>
+                                <div class="text-slate-300" data-i18n="errors.400">Invalid payload. Ensure body contains a non-empty "text" string.</div>
+                            </div>
+                            <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-4 text-sm">
+                                <div class="font-semibold text-yellow-400">401 Unauthorized</div>
+                                <div class="text-slate-300" data-i18n="errors.401">Missing or invalid RapidAPI key.</div>
+                            </div>
+                            <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-4 text-sm">
+                                <div class="font-semibold text-orange-400">403 Forbidden</div>
+                                <div class="text-slate-300" data-i18n="errors.403">Key not subscribed to a plan or lacks access.</div>
+                            </div>
+                            <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-4 text-sm">
+                                <div class="font-semibold text-fuchsia-400">429 Too Many Requests</div>
+                                <div class="text-slate-300" data-i18n="errors.429">Rate limit exceeded. Respect per-minute limits by plan.</div>
+                            </div>
+                            <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-4 text-sm">
+                                <div class="font-semibold text-sky-400">500 Internal Server Error</div>
+                                <div class="text-slate-300" data-i18n="errors.500">Unexpected error. Retry or contact support.</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="pricing" class="reveal">
+                        <h2 class="text-2xl font-bold">Pricing</h2>
+                        <p class="mt-2 text-slate-300">Monthly quotas and rate limits are enforced via RapidAPI.</p>
+                        <div class="mt-6 grid md:grid-cols-3 gap-6">
+                            <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
+                                <h3 class="text-lg font-semibold">Free</h3>
+                                <div class="mt-2 text-3xl font-extrabold">0€/mois</div>
+                                <ul class="mt-4 space-y-2 text-sm text-slate-300">
+                                    <li>100 requests / month</li>
+                                    <li>5 requests / minute</li>
+                                    <li>Community support</li>
+                                </ul>
+                            </div>
+                            <div class="rounded-2xl border border-primary bg-slate-900/60 p-6 shadow-glow">
+                                <h3 class="text-lg font-semibold">Pro 5k</h3>
+                                <div class="mt-2 text-3xl font-extrabold">10€/mois</div>
+                                <ul class="mt-4 space-y-2 text-sm text-slate-300">
+                                    <li>5000 requests / month</li>
+                                    <li>120 requests / minute</li>
+                                    <li>Email support</li>
+                                </ul>
+                            </div>
+                            <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
+                                <h3 class="text-lg font-semibold">Pro 50k</h3>
+                                <div class="mt-2 text-3xl font-extrabold">50€/mois</div>
+                                <ul class="mt-4 space-y-2 text-sm text-slate-300">
+                                    <li>50000 requests / month</li>
+                                    <li>240 requests / minute</li>
+                                    <li>Priority support</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-sm text-slate-400">Looking for 15k plan? Contact us on the Support page.</div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-900/50">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 text-sm text-slate-400 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+                © <span id="year"></span> Spam Detector API
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="index.html" class="hover:text-primary">Home</a>
+                <a href="playground.html" class="hover:text-primary">Playground</a>
+                <a href="contact.html" class="hover:text-primary">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="site.js"></script>
+</body>
+</html>
+
+
